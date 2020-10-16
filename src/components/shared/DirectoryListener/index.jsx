@@ -1,18 +1,17 @@
 import * as React from 'react'
 import NewItemModal from '../../NewItemModal'
+import DirectoryItem from './DirectoryItem'
 import NewItemIcon from '../../../assets/icons/add_new_button.png'
 import FileIcon from '../../../assets/icons/file.png'
 import DirectoryIcon from '../../../assets/icons/folder.png'
 
 const DirectoryListener = (props) => {
-  const itemsRef = React.useRef([])
+  const nameRef = React.useRef()
   const [newItemModal, setNewItemModal] = React.useState(false)
   const toggleNewItemModal = () => setNewItemModal(!newItemModal)
 
   const getImgIcon = (itemType) => {
     switch (itemType) {
-      case null:
-        return NewItemIcon
       case 'file':
         return FileIcon
       case 'directory':
@@ -24,6 +23,19 @@ const DirectoryListener = (props) => {
 
   const createItem = (item) => {
     props.tree.insert({ ...item, parent: props.node })
+  }
+
+  const removeItem = (item) => () => {
+    const children = props.tree.remove(item).children
+    props.setContent([...children])
+  }
+
+  const renameItem = () => {
+    nameRef.current.focus()
+  }
+
+  const handleNewItemName = (item) => () => {
+    props.tree.rename(item, nameRef.current.innerText)
   }
 
   return (
@@ -46,23 +58,33 @@ const DirectoryListener = (props) => {
             height={109}
           />
         </div>
-        {props.content?.map((child) => (
-          <div
+        {props.content.map((child) => (
+          <DirectoryItem
             key={child.id}
-            style={{ paddingRight: 30 }}
-            onDoubleClick={props.handleItemDoubleClick(child)}
+            removeItem={removeItem(child)}
+            renameItem={renameItem}
           >
-            <img
-              src={getImgIcon(child.type)}
-              alt={child.name}
-              width={92}
-              height={109}
-            />
-            <div style={{ textAlign: 'center' }}>
-              {' '}
-              {child.type ? child.name : ''}{' '}
+            <div
+              key={child.id}
+              style={{ paddingRight: 30 }}
+              onDoubleClick={props.handleItemDoubleClick(child)}
+            >
+              <img
+                src={getImgIcon(child.type)}
+                alt={child.name}
+                width={92}
+                height={109}
+              />
+              <div
+                style={{ textAlign: 'center' }}
+                contentEditable
+                ref={nameRef}
+                onKeyUp={handleNewItemName(child)}
+              >
+                {child.type ? child.name : ''}
+              </div>
             </div>
-          </div>
+          </DirectoryItem>
         ))}
       </div>
     </>

@@ -28,7 +28,7 @@ export default function () {
     setContent(currentTree.getRootNode().children)
   }, [])
 
-  const onItemDoubleClick = (node: any) => () => {
+  const onItemDoubleClick = (node) => () => {
     if (node.type === 'directory') {
       setNode(node)
       if (!visitedDirs.some((dir) => dir.id === node.id)) {
@@ -54,7 +54,7 @@ export default function () {
           tree={tree}
           node={node}
           content={content}
-          rootNode={tree?.getRootNode()}
+          setContent={setContent}
           handleItemDoubleClick={onItemDoubleClick}
         />
       </div>

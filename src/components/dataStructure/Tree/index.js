@@ -5,8 +5,6 @@ export const Node = function (node) {
   this.type = node.type
   this.id = node.id
   this.parent = node.parent
-  // this.depth = node.depth
-  this.active = false
   this.children = []
 }
 
@@ -16,7 +14,6 @@ export const Tree = function () {
     type: null,
     id: v4(),
     parent: null
-    // depth: 0
   })
 }
 
@@ -40,9 +37,38 @@ Tree.prototype.insert = function (newItem) {
         child.children.push(newNode)
         return
       } else {
-        console.log('here', child)
         queue.push(...child.children)
       }
+    }
+  }
+}
+
+Tree.prototype.rename = function (node, newName) {
+  let queue = [this.root]
+  let child
+  while (queue.length > 0) {
+    child = queue.shift()
+    if (child.id === node.id) {
+      child.name = newName
+      return
+    } else {
+      queue.push(...child.children)
+    }
+  }
+}
+
+Tree.prototype.remove = function (node) {
+  let queue = [this.root]
+  let child
+  while (queue.length > 0) {
+    child = queue.shift()
+    if (child.id === node.id) {
+      const parent = child.parent
+      const childIdx = parent.children.findIndex((item) => item.id === node.id)
+      parent.children.splice(childIdx, 1)
+      return parent
+    } else {
+      queue.push(...child.children)
     }
   }
 }
