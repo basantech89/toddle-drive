@@ -10,7 +10,7 @@ export const Node = function (node) {
 
 export const Tree = function () {
   this.root = new Node({
-    name: 'Create New Item',
+    name: 'Home',
     type: null,
     id: v4(),
     parent: null
@@ -66,7 +66,27 @@ Tree.prototype.remove = function (node) {
       const parent = child.parent
       const childIdx = parent.children.findIndex((item) => item.id === node.id)
       parent.children.splice(childIdx, 1)
-      return parent
+      return
+    } else {
+      queue.push(...child.children)
+    }
+  }
+}
+
+Tree.prototype.copy = function (copiedNode, toNode) {
+  let queue = [this.root]
+  let child
+  while (queue.length > 0) {
+    child = queue.shift()
+    if (child.id === toNode.id) {
+      const pastedNode = new Node({
+        name: copiedNode.name,
+        type: copiedNode.type,
+        parent: child,
+        id: v4()
+      })
+      child.children.push(pastedNode)
+      return
     } else {
       queue.push(...child.children)
     }

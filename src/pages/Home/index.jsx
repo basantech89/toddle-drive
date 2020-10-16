@@ -7,7 +7,17 @@ import AppHeader from '../../components/shared/AppHeader'
 const useHomeStyles = makeStyles(
   {
     root: {
-      padding: 50
+      display: 'flex',
+      flexDirection: 'column',
+      height: '100vh'
+    },
+    directoryListener: {
+      padding: 50,
+      flex: 1
+      // display: 'inline-block'
+    },
+    rest: {
+      flex: 1
     }
   },
   { name: 'Home' }
@@ -39,7 +49,7 @@ export default function () {
   }
 
   return (
-    <>
+    <div className={classes.root}>
       <AppHeader
         node={node}
         setNode={setNode}
@@ -49,7 +59,7 @@ export default function () {
         setVisitedDirs={setVisitedDirs}
         rootNode={tree?.getRootNode()}
       />
-      <div className={classes.root}>
+      <div className={classes.directoryListener}>
         <DirectoryListener
           tree={tree}
           node={node}
@@ -58,6 +68,6 @@ export default function () {
           handleItemDoubleClick={onItemDoubleClick}
         />
       </div>
-    </>
+    </div>
   )
 }

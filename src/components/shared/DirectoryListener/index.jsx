@@ -1,12 +1,18 @@
 import * as React from 'react'
 import NewItemModal from '../../NewItemModal'
-import DirectoryItem from './DirectoryItem'
+import ContextMenuContainer from '../ContextMenu/ContextMenuContainer'
 import NewItemIcon from '../../../assets/icons/add_new_button.png'
 import FileIcon from '../../../assets/icons/file.png'
 import DirectoryIcon from '../../../assets/icons/folder.png'
+import EditIcon from '@material-ui/icons/Edit'
+import DeleteForeverIcon from '@material-ui/icons/DeleteForever'
+import FileCopyIcon from '@material-ui/icons/FileCopy'
+import MoveToInboxIcon from '@material-ui/icons/MoveToInbox'
+import BlockIcon from '@material-ui/icons/Block'
 
 const DirectoryListener = (props) => {
   const nameRef = React.useRef()
+  const [copiedItem, setCopiedItem] = React.useState(null)
   const [newItemModal, setNewItemModal] = React.useState(false)
   const toggleNewItemModal = () => setNewItemModal(!newItemModal)
 
@@ -23,11 +29,12 @@ const DirectoryListener = (props) => {
 
   const createItem = (item) => {
     props.tree.insert({ ...item, parent: props.node })
+    props.setContent([...props.node.children])
   }
 
   const removeItem = (item) => () => {
-    const children = props.tree.remove(item).children
-    props.setContent([...children])
+    props.tree.remove(item)
+    props.setContent([...props.node.children])
   }
 
   const renameItem = () => {
@@ -38,6 +45,26 @@ const DirectoryListener = (props) => {
     props.tree.rename(item, nameRef.current.innerText)
   }
 
+  const copyItem = (item) => () => {
+    setCopiedItem(item)
+  }
+
+  const pasteItemToCurrentNode = () => {
+    props.tree.copy(copiedItem, props.node)
+    setCopiedItem(null)
+    props.setContent([...props.node.children])
+  }
+
+  const pasteItemToChildNode = (child) => () => {
+    props.tree.copy(copiedItem, child)
+    setCopiedItem(null)
+    props.setContent([...props.node.children])
+  }
+
+  const cancelPaste = () => {
+    setCopiedItem(null)
+  }
+
   return (
     <>
       <NewItemModal
@@ -45,10 +72,10 @@ const DirectoryListener = (props) => {
         toggleModalState={toggleNewItemModal}
         handleItemCreate={createItem}
       />
-      <div style={{ display: 'flex' }}>
+      <div style={{ display: 'inline-flex' }}>
         <div
           role='button'
-          style={{ paddingRight: 30, cursor: 'pointer' }}
+          style={{ marginRight: 30, cursor: 'pointer', height: 109 }}
           onClick={toggleNewItemModal}
         >
           <img
@@ -59,14 +86,45 @@ const DirectoryListener = (props) => {
           />
         </div>
         {props.content.map((child) => (
-          <DirectoryItem
+          <ContextMenuContainer
+            isVisible
+            style={{ height: 109, marginRight: 30 }}
             key={child.id}
-            removeItem={removeItem(child)}
-            renameItem={renameItem}
+            menuItems={
+              copiedItem
+                ? [
+                    {
+                      title: `Paste to ${child.name}`,
+                      icon: <MoveToInboxIcon />,
+                      onClick: pasteItemToChildNode(child)
+                    },
+                    {
+                      title: `Cancel Paste`,
+                      icon: <BlockIcon />,
+                      onClick: cancelPaste
+                    }
+                  ]
+                : [
+                    {
+                      title: 'Rename',
+                      icon: <EditIcon />,
+                      onClick: renameItem
+                    },
+                    {
+                      title: 'Delete',
+                      icon: <DeleteForeverIcon />,
+                      onClick: removeItem(child)
+                    },
+                    {
+                      title: 'Copy',
+                      icon: <FileCopyIcon />,
+                      onClick: copyItem(child)
+                    }
+                  ]
+            }
           >
             <div
               key={child.id}
-              style={{ paddingRight: 30 }}
               onDoubleClick={props.handleItemDoubleClick(child)}
             >
               <img
@@ -84,9 +142,25 @@ const DirectoryListener = (props) => {
                 {child.type ? child.name : ''}
               </div>
             </div>
-          </DirectoryItem>
+          </ContextMenuContainer>
         ))}
       </div>
+      <ContextMenuContainer
+        isVisible={!!copiedItem}
+        style={{ height: '100%' }}
+        menuItems={[
+          {
+            title: `Paste to ${props.node?.name}`,
+            icon: <MoveToInboxIcon />,
+            onClick: pasteItemToCurrentNode
+          },
+          {
+            title: `Cancel Paste`,
+            icon: <BlockIcon />,
+            onClick: cancelPaste
+          }
+        ]}
+      />
     </>
   )
 }

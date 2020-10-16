@@ -4,10 +4,6 @@ import List from '@material-ui/core/List'
 import ListItem from '@material-ui/core/ListItem'
 import ListItemIcon from '@material-ui/core/ListItemIcon'
 import ListItemText from '@material-ui/core/ListItemText'
-import FileCopyIcon from '@material-ui/icons/FileCopy'
-import DeleteForeverIcon from '@material-ui/icons/DeleteForever'
-import EditIcon from '@material-ui/icons/Edit'
-import MoveToInboxIcon from '@material-ui/icons/MoveToInbox'
 
 const useListStyles = makeStyles(
   {
@@ -55,38 +51,24 @@ export default function (props) {
     }
   })
 
-  // console.log(parentRef.current, item)
-
   const style = {
     top: y,
     left: x
   }
 
-  return isVisible ? (
+  return isVisible && props.isVisible ? (
     <List
       classes={listClasses}
       style={style}
       component='nav'
       aria-labelledby='Context Menu'
     >
-      <ListItem button onClick={props.renameItem}>
-        <ListItemIcon>
-          <EditIcon />
-        </ListItemIcon>
-        <ListItemText primary='Rename' />
-      </ListItem>
-      <ListItem button onClick={props.removeItem}>
-        <ListItemIcon>
-          <DeleteForeverIcon />
-        </ListItemIcon>
-        <ListItemText primary='Delete' />
-      </ListItem>
-      <ListItem button onClick={props.copyItem}>
-        <ListItemIcon>
-          <FileCopyIcon />
-        </ListItemIcon>
-        <ListItemText primary='Copy' />
-      </ListItem>
+      {props.menuItems.map((item, index) => (
+        <ListItem key={index} button onClick={item.onClick}>
+          <ListItemIcon>{item.icon}</ListItemIcon>
+          <ListItemText primary={item.title} />
+        </ListItem>
+      ))}
     </List>
   ) : null
 }
