@@ -47,6 +47,7 @@ const DirectoryListener = (props) => {
 
   const copyItem = (item) => () => {
     setCopiedItem(item)
+    // console.log('copied', item)
   }
 
   const pasteItemToCurrentNode = () => {
