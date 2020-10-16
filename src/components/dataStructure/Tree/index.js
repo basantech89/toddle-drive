@@ -1,75 +1,48 @@
-const Node = function (node) {
+import { v4 } from 'uuid'
+
+export const Node = function (node) {
   this.name = node.name
   this.type = node.type
   this.id = node.id
-  this.children = []
+  this.parent = node.parent
+  // this.depth = node.depth
   this.active = false
+  this.children = []
 }
 
-const Tree = function () {
-  this.root = new Node(null)
+export const Tree = function () {
+  this.root = new Node({
+    name: 'Create New Item',
+    type: null,
+    id: v4(),
+    parent: null
+    // depth: 0
+  })
 }
 
-/**
- * Inserts a word into the trie.
- * @param {string} word
- * @return {void}
- */
-Tree.prototype.insert = function (newNode, parent) {
-  if (!parent) {
+Tree.prototype.getRootNode = function () {
+  return this.root
+}
+
+Tree.prototype.insert = function (newItem) {
+  let newNode
+  newNode = new Node(newItem)
+  if (!newItem.parent) {
+    newNode.parent = this.root
     this.root.children.push(newNode)
-    return
   } else {
     let queue = [this.root]
     let child
     while (queue.length > 0) {
-      child = queue.unshift()
-      if (child.name === parent.name) {
+      child = queue.shift()
+      if (child.id === newItem.parent.id) {
+        newNode.parent = child
         child.children.push(newNode)
         return
       } else {
+        console.log('here', child)
         queue.push(...child.children)
       }
     }
   }
 }
-
-/**
- * Returns if the word is in the trie.
- * @param {string} word
- * @return {boolean}
- */
-Tree.prototype.search = function (word) {
-  let node = this.root
-  for (const letter of word) {
-    if (letter in node.children) {
-      node = node.children[letter]
-    } else {
-      return false
-    }
-  }
-  return node.isWord
-}
-/**
- * Returns if there is any word in the trie that starts with the given prefix.
- * @param {string} prefix
- * @return {boolean}
- */
-Tree.prototype.startsWith = function (prefix) {
-  let node = this.root
-  for (const letter of prefix) {
-    if (letter in node.children) {
-      node = node.children[letter]
-    } else {
-      return false
-    }
-  }
-  return true
-}
-/**
- * Your Tree object will be instantiated and called as such:
- * var obj = new Tree()
- * obj.insert(word)
- * var param_2 = obj.search(word)
- * var param_3 = obj.startsWith(prefix)
- */
