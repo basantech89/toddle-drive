@@ -4,16 +4,17 @@ import {
   createStyles,
   fade,
   InputBase,
+  Breadcrumbs,
+  Chip,
+  Toolbar,
   Typography
 } from '@material-ui/core'
-import Toolbar from '@material-ui/core/Toolbar'
-import SearchIcon from '@material-ui/icons/Search'
 import { emphasize, makeStyles, withStyles } from '@material-ui/core/styles'
-import Breadcrumbs from '@material-ui/core/Breadcrumbs'
+import useAppContext from '../../../context/AppContext'
+import SearchIcon from '@material-ui/icons/Search'
 import HomeIcon from '@material-ui/icons/Home'
 import FolderOpenIcon from '@material-ui/icons/FolderOpen'
 import { ReactComponent as BackIcon } from '../../../assets/icons/up-arrow-button.svg'
-import Chip from '@material-ui/core/Chip'
 
 const useAppHeaderStyles = makeStyles(
   (theme) =>
@@ -62,7 +63,6 @@ const useAppHeaderStyles = makeStyles(
       },
       inputInput: {
         padding: theme.spacing(1, 1, 1, 0),
-        // vertical padding + font size from searchIcon
         paddingLeft: `calc(1em + ${theme.spacing(4)}px)`,
         transition: theme.transitions.create('width'),
         width: '100%',
@@ -103,26 +103,27 @@ const StyledBreadcrumb = withStyles((theme) => ({
 
 export default function (props) {
   const classes = useAppHeaderStyles()
+  const { tree, node, setNode, setContent } = useAppContext()
+  const rootNode = tree?.getRootNode()
   const breadcrumbClasses = useBreadcrumbStyles()
   const [searchVal, setSearchVal] = React.useState('')
 
   const resetInputValue = () => {
     setSearchVal('')
-    props.setContent(props.node?.children)
+    setContent(node?.children)
   }
+
   const handleChange = (event) => {
     setSearchVal(event.target.value)
-    props.setContent(
-      props.node?.children.filter((child) =>
-        child.name.includes(event.target.value)
-      )
+    setContent(
+      node?.children.filter((child) => child.name.includes(event.target.value))
     )
   }
 
   const goBack = () => {
-    if (props.node.parent) {
-      props.setNode(props.node.parent)
-      props.setContent(props.node?.parent?.children)
+    if (node.parent) {
+      setNode(node.parent)
+      setContent(node?.parent?.children)
       const duplicateDirs = [...props.visitedDirs]
       duplicateDirs.pop()
       props.setVisitedDirs(duplicateDirs)
@@ -130,8 +131,8 @@ export default function (props) {
   }
 
   const handleBreadcrumbClick = (node) => () => {
-    props.setNode(node)
-    props.setContent(node.children)
+    setNode(node)
+    setContent(node.children)
     const nodeVisitedIdx = props.visitedDirs.findIndex(
       (dir) => dir.id === node.id
     )
@@ -158,7 +159,7 @@ export default function (props) {
               component='a'
               label='Home'
               icon={<HomeIcon fontSize='small' />}
-              onClick={handleBreadcrumbClick(props.rootNode)}
+              onClick={handleBreadcrumbClick(rootNode)}
             />
             {props.visitedDirs.map((dir) => (
               <StyledBreadcrumb

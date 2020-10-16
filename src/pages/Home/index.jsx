@@ -3,6 +3,7 @@ import DirectoryListener from '../../components/shared/DirectoryListener'
 import { makeStyles } from '@material-ui/core/styles'
 import { Tree } from '../../components/dataStructure/Tree'
 import AppHeader from '../../components/shared/AppHeader'
+import useAppContext from '../../context/AppContext'
 
 const useHomeStyles = makeStyles(
   {
@@ -24,10 +25,7 @@ const useHomeStyles = makeStyles(
 
 export default function () {
   const classes = useHomeStyles()
-  const [tree, setTree] = React.useState()
-  const [node, setNode] = React.useState(null)
-
-  const [content, setContent] = React.useState([])
+  const { setTree, setNode, setContent } = useAppContext()
   const [visitedDirs, setVisitedDirs] = React.useState([])
 
   React.useEffect(() => {
@@ -35,7 +33,7 @@ export default function () {
     setTree(currentTree)
     setNode(currentTree.getRootNode())
     setContent(currentTree.getRootNode().children)
-  }, [])
+  }, [setContent, setNode, setTree])
 
   const onItemDoubleClick = (node) => () => {
     if (node.type === 'directory') {
@@ -49,23 +47,9 @@ export default function () {
 
   return (
     <div className={classes.root}>
-      <AppHeader
-        node={node}
-        setNode={setNode}
-        visitedDirs={visitedDirs}
-        content={content}
-        setContent={setContent}
-        setVisitedDirs={setVisitedDirs}
-        rootNode={tree?.getRootNode()}
-      />
+      <AppHeader visitedDirs={visitedDirs} setVisitedDirs={setVisitedDirs} />
       <div className={classes.directoryListener}>
-        <DirectoryListener
-          tree={tree}
-          node={node}
-          content={content}
-          setContent={setContent}
-          handleItemDoubleClick={onItemDoubleClick}
-        />
+        <DirectoryListener handleItemDoubleClick={onItemDoubleClick} />
       </div>
     </div>
   )

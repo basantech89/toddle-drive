@@ -93,3 +93,17 @@ Tree.prototype.copy = function (copiedNode, toNode) {
     }
   }
 }
+
+Tree.prototype.reorder = function (nodeID, reOrderedChildren) {
+  let queue = [this.root]
+  let child
+  while (queue.length > 0) {
+    child = queue.shift()
+    if (child.id === nodeID) {
+      child.children = [...reOrderedChildren]
+      return
+    } else {
+      queue.push(...child.children)
+    }
+  }
+}
