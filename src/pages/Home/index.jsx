@@ -14,7 +14,6 @@ const useHomeStyles = makeStyles(
     directoryListener: {
       padding: 50,
       flex: 1
-      // display: 'inline-block'
     },
     rest: {
       flex: 1

@@ -85,6 +85,7 @@ Tree.prototype.copy = function (copiedNode, toNode) {
         parent: child,
         id: v4()
       })
+      pastedNode.children = [...copiedNode.children]
       child.children.push(pastedNode)
       return
     } else {
