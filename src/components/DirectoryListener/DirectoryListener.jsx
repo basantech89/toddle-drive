@@ -2,15 +2,18 @@ import * as React from 'react'
 import { useHistory } from 'react-router-dom'
 import NewItemModal from '../NewItemModal'
 import { ContextMenuContainer } from '../shared/ContextMenu'
+import { useDirectoryListenerStyles } from './style'
 import NewItemIcon from '../../assets/icons/add_new_button.png'
 import MoveToInboxIcon from '@material-ui/icons/MoveToInbox'
 import BlockIcon from '@material-ui/icons/Block'
 import MovableList from '../shared/MovableList'
 import useAppContext from '../../context/AppContext'
+import { ReactComponent as BlankPageIcon } from '../../assets/icons/very-sad.svg'
 
 const DirectoryListener = (props) => {
   const history = useHistory()
-  const { tree, node, setNode, setContent } = useAppContext()
+  const classes = useDirectoryListenerStyles()
+  const { tree, node, content, setContent } = useAppContext()
   const [copiedItem, setCopiedItem] = React.useState(null)
   const [newItemModal, setNewItemModal] = React.useState(false)
   const toggleNewItemModal = () => setNewItemModal(!newItemModal)
@@ -72,16 +75,23 @@ const DirectoryListener = (props) => {
             height={103}
           />
         </div>
-        <MovableList
-          cancelPaste={cancelPaste}
-          setCopiedItem={setCopiedItem}
-          handleItemDoubleClick={props.handleItemDoubleClick}
-          copiedItem={copiedItem}
-        />
+        {content.length ? (
+          <MovableList
+            cancelPaste={cancelPaste}
+            setCopiedItem={setCopiedItem}
+            handleItemDoubleClick={props.handleItemDoubleClick}
+            copiedItem={copiedItem}
+          />
+        ) : (
+          <div className={classes.blankPage}>
+            <BlankPageIcon className={classes.icon} />
+            <p> use the "Plus" button to create new items </p>
+          </div>
+        )}
       </div>
       <ContextMenuContainer
         isVisible={!!copiedItem}
-        style={{ height: '100%' }}
+        style={{ height: '90%' }}
         menuItems={[
           {
             title: `Paste to ${node?.name}`,

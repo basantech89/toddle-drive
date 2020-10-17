@@ -1,11 +1,5 @@
 import * as React from 'react'
-import {
-  AppBar,
-  InputBase,
-  Breadcrumbs,
-  Toolbar,
-  Typography
-} from '@material-ui/core'
+import { AppBar, InputBase, Breadcrumbs, Toolbar } from '@material-ui/core'
 import useAppContext from '../../../context/AppContext'
 import SearchIcon from '@material-ui/icons/Search'
 import HomeIcon from '@material-ui/icons/Home'
