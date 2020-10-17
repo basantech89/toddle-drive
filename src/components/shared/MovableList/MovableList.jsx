@@ -43,7 +43,11 @@ const MovableList = (props) => {
 
   return (
     <DragDropContext onDragEnd={onDragEnd}>
-      <Droppable droppableId='droppable' direction='horizontal'>
+      <Droppable
+        droppableId='droppable'
+        direction='horizontal'
+        isCombineEnabled={true}
+      >
         {(provided, snapshot) => (
           <div
             ref={provided.innerRef}

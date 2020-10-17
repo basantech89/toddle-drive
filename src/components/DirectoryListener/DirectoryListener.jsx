@@ -12,6 +12,7 @@ import { ReactComponent as BlankPageIcon } from '../../assets/icons/very-sad.svg
 const DirectoryListener = (props) => {
   const classes = useDirectoryListenerStyles()
   const { tree, node, content, setContent } = useAppContext()
+
   const [copiedItem, setCopiedItem] = React.useState(null)
   const [newItemModal, setNewItemModal] = React.useState(false)
   const toggleNewItemModal = () => setNewItemModal(!newItemModal)
@@ -30,28 +31,6 @@ const DirectoryListener = (props) => {
   const cancelPaste = () => {
     setCopiedItem(null)
   }
-
-  // React.useEffect(() => {
-  //   const itemNames = window.location.pathname.split('/')
-  //   let node = tree?.getRootNode()
-  //   // let children = []
-  //   console.log(node)
-  //   if (node) {
-  //     itemNames.forEach((name, index) => {
-  //       if (node.name === name) {
-  //         // children = node.children
-  //         if (index !== itemNames.length - 1) {
-  //           node = node.children.find(
-  //             (child) => child.name === itemNames[index + 1]
-  //           )
-  //         }
-  //         setNode(node)
-  //       } else {
-  //         history.push('/home')
-  //       }
-  //     })
-  //   }
-  // }, [window.location.pathname])
 
   return (
     <>
