@@ -27,18 +27,22 @@ const getListStyle = (isDraggingOver) => ({
 const MovableList = (props) => {
   const { tree, node, content, setContent } = useAppContext()
   const onDragEnd = (result) => {
-    if (!result.destination) {
-      return
+    if (result.destination) {
+      const reOrderedItems = reorder(
+        content,
+        result.source.index,
+        result.destination.index
+      )
+
+      tree.reorder(node.id, reOrderedItems)
+      setContent(reOrderedItems)
+    } else if (result.combine) {
+      const updatedContent = tree.move(
+        result.source.index,
+        result.combine.draggableId
+      )
+      setContent(updatedContent)
     }
-
-    const reOrderedItems = reorder(
-      content,
-      result.source.index,
-      result.destination.index
-    )
-
-    tree.reorder(node.id, reOrderedItems)
-    setContent(reOrderedItems)
   }
 
   return (

@@ -107,3 +107,21 @@ Tree.prototype.reorder = function (nodeID, reOrderedChildren) {
     }
   }
 }
+
+Tree.prototype.move = function (fromIdx, toID) {
+  let queue = [this.root]
+  let toNode
+  let child
+  while (queue.length > 0) {
+    child = queue.shift()
+    if (child.id === toID) {
+      toNode = child
+      const fromNode = toNode.parent.children.splice(fromIdx, 1)[0]
+      fromNode.parent = toNode
+      toNode.children.push(fromNode)
+      return toNode.parent.children
+    } else {
+      queue.push(...child.children)
+    }
+  }
+}
