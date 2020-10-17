@@ -1,9 +1,9 @@
 import * as React from 'react'
-import DirectoryListener from '../../components/shared/DirectoryListener'
+import DirectoryListener from '../../components/DirectoryListener'
 import { makeStyles } from '@material-ui/core/styles'
 import { Tree } from '../../components/dataStructure/Tree'
-import AppHeader from '../../components/shared/AppHeader'
 import useAppContext from '../../context/AppContext'
+import AppHeader from '../../components/shared/AppHeader'
 
 const useHomeStyles = makeStyles(
   {
@@ -23,7 +23,7 @@ const useHomeStyles = makeStyles(
   { name: 'Home' }
 )
 
-export default function () {
+const Home = () => {
   const classes = useHomeStyles()
   const { setTree, setNode, setContent } = useAppContext()
   const [visitedDirs, setVisitedDirs] = React.useState([])
@@ -54,3 +54,5 @@ export default function () {
     </div>
   )
 }
+
+export default Home

@@ -4,12 +4,12 @@ import BlockIcon from '@material-ui/icons/Block'
 import EditIcon from '@material-ui/icons/Edit'
 import DeleteForeverIcon from '@material-ui/icons/DeleteForever'
 import FileCopyIcon from '@material-ui/icons/FileCopy'
-import FileIcon from '../../../../assets/icons/file.png'
-import DirectoryIcon from '../../../../assets/icons/folder.png'
-import useAppContext from '../../../../context/AppContext'
-import ContextMenuContainer from '../../ContextMenu/ContextMenuContainer'
+import FileIcon from '../../../assets/icons/file.png'
+import DirectoryIcon from '../../../assets/icons/folder.png'
+import useAppContext from '../../../context/AppContext'
+import { ContextMenuContainer } from '../../shared/ContextMenu'
 
-const DraggableItems = (props) => {
+const DraggableListenerItems = (props) => {
   const nameRef = React.useRef(null)
   const { tree, node, setContent } = useAppContext()
 
@@ -105,4 +105,4 @@ const DraggableItems = (props) => {
   )
 }
 
-export default DraggableItems
+export default DraggableListenerItems

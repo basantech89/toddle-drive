@@ -19,7 +19,7 @@ const useListStyles = makeStyles(
   { name: 'ContextMenu-List' }
 )
 
-export default function (props) {
+const ContextMenu = (props) => {
   const listClasses = useListStyles()
   const [isVisible, setVisibility] = React.useState(false)
   const [x, setX] = React.useState(0)
@@ -72,3 +72,5 @@ export default function (props) {
     </List>
   ) : null
 }
+
+export default ContextMenu

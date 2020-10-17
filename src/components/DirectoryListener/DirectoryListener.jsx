@@ -1,11 +1,11 @@
 import * as React from 'react'
-import NewItemModal from '../../NewItemModal'
-import ContextMenuContainer from '../ContextMenu/ContextMenuContainer'
-import NewItemIcon from '../../../assets/icons/add_new_button.png'
+import NewItemModal from '../NewItemModal'
+import { ContextMenuContainer } from '../shared/ContextMenu'
+import NewItemIcon from '../../assets/icons/add_new_button.png'
 import MoveToInboxIcon from '@material-ui/icons/MoveToInbox'
 import BlockIcon from '@material-ui/icons/Block'
-import MovableList from './MovableList'
-import useAppContext from '../../../context/AppContext'
+import MovableList from '../shared/MovableList'
+import useAppContext from '../../context/AppContext'
 
 const DirectoryListener = (props) => {
   const { tree, node, setContent } = useAppContext()

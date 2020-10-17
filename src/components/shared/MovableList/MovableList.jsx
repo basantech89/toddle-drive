@@ -1,7 +1,7 @@
 import * as React from 'react'
 import { DragDropContext, Droppable, Draggable } from 'react-beautiful-dnd'
-import useAppContext from '../../../../context/AppContext'
-import DraggableItems from '../DraggableItems/'
+import useAppContext from '../../../context/AppContext'
+import { DraggableListenerItems } from '../../DirectoryListener'
 
 const reorder = (list, startIndex, endIndex) => {
   const result = Array.from(list)
@@ -61,7 +61,7 @@ const MovableList = (props) => {
                       provided.draggableProps.style
                     )}
                   >
-                    <DraggableItems item={item} {...props} />
+                    <DraggableListenerItems item={item} {...props} />
                   </div>
                 )}
               </Draggable>
