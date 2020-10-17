@@ -13,14 +13,16 @@ const reorder = (list, startIndex, endIndex) => {
 
 const getItemStyle = (isDragging, draggableStyle) => ({
   userSelect: 'none',
-  background: isDragging ? '#30497b' : 'transparent',
+  // background: isDragging ? 'lightblue' : 'transparent',
+  background: isDragging ? '#72a2c0' : 'transparent',
   ...draggableStyle
 })
 
 const getListStyle = (isDraggingOver) => ({
-  background: isDraggingOver ? 'lightblue' : null,
+  background: isDraggingOver ? '#a0bacb' : null,
   display: 'flex',
-  padding: '0 20px'
+  padding: '0 20px',
+  borderRadius: 10
 })
 
 const MovableList = (props) => {

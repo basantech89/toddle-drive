@@ -9,7 +9,9 @@ export const useAppHeaderStyles = makeStyles(
       },
       title: {
         flexGrow: 1,
-        display: 'none',
+        // display: 'none',
+        color: '#fff',
+        textDecoration: 'none',
         [theme.breakpoints.up('sm')]: {
           display: 'block'
         }
@@ -37,12 +39,12 @@ export const useAppHeaderStyles = makeStyles(
         alignItems: 'center',
         justifyContent: 'center'
       },
-      backButton: {
-        cursor: 'pointer',
+      backButton: ({ name }) => ({
+        cursor: name === 'Home' ? 'default' : 'pointer',
         '& path': {
-          fill: 'white'
+          fill: name === 'Home' ? '#c9c7c7' : '#fff'
         }
-      },
+      }),
       inputRoot: {
         color: 'inherit'
       },
@@ -52,9 +54,9 @@ export const useAppHeaderStyles = makeStyles(
         transition: theme.transitions.create('width'),
         width: '100%',
         [theme.breakpoints.up('sm')]: {
-          width: '12ch',
+          width: '18ch',
           '&:focus': {
-            width: '20ch'
+            width: '30ch'
           }
         }
       }

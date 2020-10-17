@@ -50,7 +50,7 @@ const DraggableListenerItems = (props) => {
   return (
     <ContextMenuContainer
       isVisible
-      style={{ height: 109, marginRight: 30 }}
+      style={{ marginRight: 30 }}
       key={props.item.id}
       menuItems={
         props.copiedItem
@@ -89,8 +89,8 @@ const DraggableListenerItems = (props) => {
         <img
           src={getImgIcon(props.item.type)}
           alt={props.item.name}
-          width={92}
-          height={109}
+          width={68}
+          height={80}
         />
         <div
           style={{ textAlign: 'center' }}

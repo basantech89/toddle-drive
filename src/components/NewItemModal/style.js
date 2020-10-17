@@ -7,18 +7,23 @@ export const useNewItemModalStyles = makeStyles(
       borderRadius: 15,
       backgroundColor: '#4AB7FF',
       padding: '8px 0',
-      margin: '20px 0',
+      margin: '8px 0',
       '&:hover': {
         backgroundColor: '#679ac6'
       }
     },
     title: {
+      paddingTop: 25,
       paddingBottom: 0,
       width: '100%',
       '& h2': {
         display: 'flex',
         justifyContent: 'space-between',
         padding: '0 20px',
+        '& span': {
+          marginLeft: 'auto',
+          marginRight: 'auto'
+        },
         '& div': {
           cursor: 'pointer',
           '& svg': {
@@ -32,6 +37,18 @@ export const useNewItemModalStyles = makeStyles(
     },
     input: {
       padding: '10.5px 14px'
+    },
+    inputRoot: {
+      height: 62,
+      '& .MuiOutlinedInput-root': {
+        borderRadius: 10
+      }
+    },
+    contentRoot: {
+      paddingBottom: 0
+    },
+    actionsRoot: {
+      paddingTop: 0
     }
   },
   { name: 'NewItemModal' }
@@ -59,14 +76,16 @@ export const useToggleButtonGroupStyles = makeStyles(
       display: 'flex',
       justifyContent: 'center',
       borderRadius: 10,
-      paddingTop: 40,
-      paddingBottom: 30,
+      paddingTop: 20,
+      paddingBottom: 35,
       '& span': {
         padding: '0 10px'
       },
       '& button': {
         color: '#6f6f6f',
-        lineHeight: 1.2
+        lineHeight: 1.2,
+        borderRadius: 10,
+        width: 87
       },
       '& .Mui-selected': {
         '&:hover': {

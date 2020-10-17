@@ -16,10 +16,11 @@ import {
   useAppHeaderStyles,
   useBreadcrumbStyles
 } from './style'
+import { NavLink } from 'react-router-dom'
 
 const AppHeader = (props) => {
-  const classes = useAppHeaderStyles()
   const { tree, node, setNode, setContent } = useAppContext()
+  const classes = useAppHeaderStyles({ name: node?.name })
   const rootNode = tree?.getRootNode()
   const breadcrumbClasses = useBreadcrumbStyles()
   const [searchVal, setSearchVal] = React.useState('')
@@ -60,10 +61,10 @@ const AppHeader = (props) => {
   return (
     <AppBar position={'static'}>
       <Toolbar className={classes.toolbar}>
-        <div style={{ display: 'flex' }}>
-          <Typography variant='h6' className={classes.title} noWrap>
+        <div style={{ display: 'flex', alignItems: 'center' }}>
+          <NavLink to='/' variant='h6' className={classes.title} noWrap>
             Toddle Drive
-          </Typography>
+          </NavLink>
           <BackIcon
             height='30'
             width='80'

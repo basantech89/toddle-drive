@@ -15,42 +15,67 @@ import {
   useNewItemModalStyles,
   useToggleButtonGroupStyles
 } from './style'
+import useAppContext from '../../context/AppContext'
 
 const NewItemModal = (props) => {
   const classes = useNewItemModalStyles()
   const dialogClasses = useDialogStyles()
   const toggleButtonGroupClasses = useToggleButtonGroupStyles()
 
-  const itemName = React.useRef()
+  const { node } = useAppContext()
+  const itemNameRef = React.useRef('')
+  const [itemNameError, setItemNameError] = React.useState('')
+  const resetItemError = () => setItemNameError('')
+
   const [itemType, setItemType] = React.useState('file')
   const handleItemType = (event, newAlignment) => {
-    setItemType(newAlignment)
+    if (newAlignment !== null) {
+      setItemType(newAlignment)
+    }
   }
 
-  const handleSubmit = () => {
-    props.handleItemCreate({
-      name: itemName.current?.value,
-      type: itemType,
-      active: false,
-      id: v4()
-    })
+  const checkAlreadyExist = (node, name) => {
+    const isMatched = node.children.some((child) => child.name === name)
+    return isMatched
+  }
+
+  const onSubmit = () => {
+    const itemName = itemNameRef.current?.value.trim()
+    if (!itemName || /\s+$/.test(itemName)) {
+      setItemNameError('Name is mandatory')
+    } else if (checkAlreadyExist(node, itemName)) {
+      setItemNameError('File / Folder name already exist')
+    } else {
+      props.handleItemCreate({
+        name: itemName,
+        type: itemType,
+        active: false,
+        id: v4()
+      })
+      props.toggleModalState()
+      setItemNameError('')
+    }
+  }
+
+  const closeModal = () => {
+    setItemNameError('')
     props.toggleModalState()
   }
 
   return (
     <Dialog
       open={props.modalState}
-      onClose={props.toggleModalState}
+      onClose={closeModal}
       aria-labelledby='New Item Dialog'
       classes={dialogClasses}
     >
       <DialogTitle id='new-item-dialog' className={classes.title}>
         <span> Create New </span>
-        <div onClick={props.toggleModalState}>
+        <div onClick={closeModal}>
           <CloseIcon />
         </div>
       </DialogTitle>
-      <DialogContent>
+      <DialogContent className={classes.contentRoot}>
         <ToggleButtonGroup
           value={itemType}
           exclusive
@@ -66,10 +91,14 @@ const NewItemModal = (props) => {
           </ToggleButton>
         </ToggleButtonGroup>
         <TextField
-          id='outlined-basic'
+          className={classes.inputRoot}
+          onFocus={resetItemError}
+          error={!!itemNameError}
+          helperText={itemNameError}
+          id='item-name'
           label='Name'
           variant='outlined'
-          inputRef={itemName}
+          inputRef={itemNameRef}
           InputLabelProps={{
             classes: {
               root: classes.inputLabel
@@ -82,12 +111,12 @@ const NewItemModal = (props) => {
           }}
         />
       </DialogContent>
-      <DialogActions>
+      <DialogActions className={classes.actionsRoot}>
         <Button
           color='primary'
           variant='contained'
           className={classes.createButton}
-          onClick={handleSubmit}
+          onClick={onSubmit}
         >
           Create
         </Button>

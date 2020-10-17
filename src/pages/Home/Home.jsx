@@ -1,4 +1,5 @@
 import * as React from 'react'
+import { useHistory } from 'react-router-dom'
 import DirectoryListener from '../../components/DirectoryListener'
 import { makeStyles } from '@material-ui/core/styles'
 import { Tree } from '../../components/dataStructure/Tree'
@@ -25,6 +26,7 @@ const useHomeStyles = makeStyles(
 
 const Home = () => {
   const classes = useHomeStyles()
+  const history = useHistory()
   const { setTree, setNode, setContent } = useAppContext()
   const [visitedDirs, setVisitedDirs] = React.useState([])
 
@@ -42,6 +44,7 @@ const Home = () => {
         setVisitedDirs([...visitedDirs, node])
       }
       setContent(node.children)
+      history.push(`${window.location.pathname}/${node.name}`)
     }
   }
 

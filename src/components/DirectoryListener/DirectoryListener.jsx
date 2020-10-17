@@ -1,4 +1,5 @@
 import * as React from 'react'
+import { useHistory } from 'react-router-dom'
 import NewItemModal from '../NewItemModal'
 import { ContextMenuContainer } from '../shared/ContextMenu'
 import NewItemIcon from '../../assets/icons/add_new_button.png'
@@ -8,7 +9,8 @@ import MovableList from '../shared/MovableList'
 import useAppContext from '../../context/AppContext'
 
 const DirectoryListener = (props) => {
-  const { tree, node, setContent } = useAppContext()
+  const history = useHistory()
+  const { tree, node, setNode, setContent } = useAppContext()
   const [copiedItem, setCopiedItem] = React.useState(null)
   const [newItemModal, setNewItemModal] = React.useState(false)
   const toggleNewItemModal = () => setNewItemModal(!newItemModal)
@@ -28,6 +30,28 @@ const DirectoryListener = (props) => {
     setCopiedItem(null)
   }
 
+  // React.useEffect(() => {
+  //   const itemNames = window.location.pathname.split('/')
+  //   let node = tree?.getRootNode()
+  //   // let children = []
+  //   console.log(node)
+  //   if (node) {
+  //     itemNames.forEach((name, index) => {
+  //       if (node.name === name) {
+  //         // children = node.children
+  //         if (index !== itemNames.length - 1) {
+  //           node = node.children.find(
+  //             (child) => child.name === itemNames[index + 1]
+  //           )
+  //         }
+  //         setNode(node)
+  //       } else {
+  //         history.push('/home')
+  //       }
+  //     })
+  //   }
+  // }, [window.location.pathname])
+
   return (
     <>
       <NewItemModal
@@ -38,14 +62,14 @@ const DirectoryListener = (props) => {
       <div style={{ display: 'inline-flex' }}>
         <div
           role='button'
-          style={{ marginRight: 30, cursor: 'pointer', height: 109 }}
+          style={{ marginRight: 30, cursor: 'pointer' }}
           onClick={toggleNewItemModal}
         >
           <img
             src={NewItemIcon}
             alt='Create New Icon'
-            width={92}
-            height={109}
+            width={88.03}
+            height={103}
           />
         </div>
         <MovableList

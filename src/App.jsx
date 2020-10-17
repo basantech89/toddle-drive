@@ -1,13 +1,15 @@
 import React from 'react'
-import Home from './pages/Home'
-import './App.css'
 import { AppProvider } from './context/AppContext'
+import { BrowserRouter } from 'react-router-dom'
+import AppContainer from './container/AppContainer'
 
 function App() {
   return (
-    <AppProvider>
-      <Home />
-    </AppProvider>
+    <BrowserRouter>
+      <AppProvider>
+        <AppContainer />
+      </AppProvider>
+    </BrowserRouter>
   )
 }
 
