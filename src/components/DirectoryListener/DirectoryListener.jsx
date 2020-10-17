@@ -1,5 +1,4 @@
 import * as React from 'react'
-import { useHistory } from 'react-router-dom'
 import NewItemModal from '../NewItemModal'
 import { ContextMenuContainer } from '../shared/ContextMenu'
 import { useDirectoryListenerStyles } from './style'
@@ -11,7 +10,6 @@ import useAppContext from '../../context/AppContext'
 import { ReactComponent as BlankPageIcon } from '../../assets/icons/very-sad.svg'
 
 const DirectoryListener = (props) => {
-  const history = useHistory()
   const classes = useDirectoryListenerStyles()
   const { tree, node, content, setContent } = useAppContext()
   const [copiedItem, setCopiedItem] = React.useState(null)
