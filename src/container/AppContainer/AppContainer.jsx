@@ -5,8 +5,7 @@ import Home from '../../pages/Home'
 const AppContainer = () => {
   return (
     <Switch>
-      <Route path='/:dir' component={Home} />
-      {/*<Route exact path='/home/:dir' component={DirectoryListener} />*/}
+      <Route path='/home' component={Home} />
       <Redirect from='/' to='/home' />
     </Switch>
   )

@@ -1,4 +1,5 @@
 import * as React from 'react'
+import { useHistory } from 'react-router-dom'
 import DirectoryListener from '../../components/DirectoryListener'
 import { makeStyles } from '@material-ui/core/styles'
 import { Tree } from '../../components/dataStructure/Tree'
@@ -22,9 +23,10 @@ const useHomeStyles = makeStyles(
 )
 
 const Home = () => {
+  const history = useHistory()
   const classes = useHomeStyles()
 
-  const { setTree, setNode, setContent } = useAppContext()
+  const { tree, setTree, setNode, setContent } = useAppContext()
   const [visitedDirs, setVisitedDirs] = React.useState([])
   const [searchVal, setSearchVal] = React.useState('')
 
@@ -35,37 +37,56 @@ const Home = () => {
     setContent(currentTree.getRootNode().children)
   }, [setContent, setNode, setTree])
 
-  // React.useEffect(() => {
-  //   const itemNames = window.location.pathname.split('/').slice(1)
-  //   let node = tree?.getRootNode()
-  //   let name
-  //   console.log(node)
-  //   if (node) {
-  //     for (let i = 0; i < itemNames.length; i++) {
-  //       name = itemNames[i]
-  //       if (node.name === name) {
-  //         if (i === itemNames.length - 1) {
-  //           setNode(node)
-  //           setContent(node.children)
-  //           return
-  //         }
-  //         node = node.children.find((child) => child.name === itemNames[i + 1])
-  //       } else {
-  //         history.push('/')
-  //         return
-  //       }
-  //     }
-  //   }
-  // }, [window.location.pathname])
+  React.useEffect(() => {
+    let itemNames = window.location.pathname.split('/').slice(1)
+    itemNames = itemNames.filter((name) => name)
+    let currNode = tree?.getRootNode()
+    let allNodes = [currNode]
+    let name
+    if (currNode) {
+      for (let i = 0; i < itemNames.length; i++) {
+        name = itemNames[i]
+        if (currNode && currNode.name) {
+          if (currNode.name === name) {
+            if (i === itemNames.length - 1) {
+              setNode(currNode)
+              setContent(currNode.children)
+              break
+            }
+            currNode = currNode.children.find(
+              (child) => child.name === itemNames[i + 1]
+            )
+            allNodes.push(currNode)
+          } else {
+            history.push('/home')
+            return
+          }
+        }
+      }
+      const visitedNodeIdx = visitedDirs.findIndex(
+        (dir) => dir.id === currNode.id
+      )
+      if (visitedNodeIdx !== -1) {
+        const duplicateDirs = [...visitedDirs]
+        duplicateDirs.splice(visitedNodeIdx + 1)
+        setVisitedDirs(duplicateDirs)
+      } else {
+        setVisitedDirs([...allNodes])
+      }
+    } else {
+      history.push('/home')
+    }
+  }, [window.location.pathname, tree])
 
   const onItemDoubleClick = (node) => () => {
     if (node.type === 'directory') {
       setNode(node)
-      if (!visitedDirs.some((dir) => dir.id === node.id)) {
-        setVisitedDirs([...visitedDirs, node])
-      }
       setContent(node.children)
-      // history.push(`${window.location.pathname}/${node.name}`)
+      let pathname = window.location.pathname
+      if (pathname[pathname.length - 1] === '/') {
+        pathname = pathname.substring(0, pathname.length - 1)
+      }
+      history.push(`${pathname}/${node.name}`)
     }
   }
 

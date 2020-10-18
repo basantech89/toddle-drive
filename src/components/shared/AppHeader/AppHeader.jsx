@@ -1,4 +1,5 @@
 import * as React from 'react'
+import { useHistory } from 'react-router-dom'
 import { AppBar, InputBase, Breadcrumbs, Toolbar } from '@material-ui/core'
 import useAppContext from '../../../context/AppContext'
 import SearchIcon from '@material-ui/icons/Search'
@@ -13,6 +14,7 @@ import {
 import { NavLink } from 'react-router-dom'
 
 const AppHeader = (props) => {
+  const history = useHistory()
   const { tree, node, setNode, setContent } = useAppContext()
   const classes = useAppHeaderStyles({ name: node?.name })
   const rootNode = tree?.getRootNode()
@@ -41,14 +43,16 @@ const AppHeader = (props) => {
   }
 
   const handleBreadcrumbClick = (node) => () => {
-    setNode(node)
-    setContent(node.children)
     const nodeVisitedIdx = props.visitedDirs.findIndex(
       (dir) => dir.id === node.id
     )
-    const duplicateDirs = [...props.visitedDirs]
-    duplicateDirs.splice(nodeVisitedIdx + 1)
-    props.setVisitedDirs(duplicateDirs)
+    let pathNames = window.location.pathname.split('/').slice(1)
+    pathNames.splice(nodeVisitedIdx + 1)
+    let pathname = pathNames.join('/')
+    if (!pathname.startsWith('/')) {
+      pathname = `/${pathname}`
+    }
+    history.push(pathname)
   }
 
   return (
@@ -69,18 +73,18 @@ const AppHeader = (props) => {
             classes={breadcrumbClasses}
             maxItems={5}
           >
-            <StyledBreadcrumb
-              component='a'
-              label='Home'
-              icon={<HomeIcon fontSize='small' />}
-              onClick={handleBreadcrumbClick(rootNode)}
-            />
             {props.visitedDirs.map((dir) => (
               <StyledBreadcrumb
                 key={dir.id}
                 component='a'
-                label={dir.name}
-                icon={<FolderOpenIcon fontSize='small' />}
+                label={dir.name === 'home' ? 'Home' : dir.name}
+                icon={
+                  dir.name === 'home' ? (
+                    <HomeIcon fontSize='small' />
+                  ) : (
+                    <FolderOpenIcon fontSize='small' />
+                  )
+                }
                 onClick={handleBreadcrumbClick(dir)}
               />
             ))}

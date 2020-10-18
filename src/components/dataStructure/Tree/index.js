@@ -24,7 +24,7 @@ const getNodeName = (fromNode, toNode) => {
 export class Tree {
   constructor() {
     this.root = new Node({
-      name: 'Home',
+      name: 'home',
       type: null,
       id: v4(),
       parent: null

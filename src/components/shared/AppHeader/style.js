@@ -43,9 +43,9 @@ export const useAppHeaderStyles = makeStyles(
         justifyContent: 'center'
       },
       backButton: ({ name }) => ({
-        cursor: name === 'Home' ? 'default' : 'pointer',
+        cursor: name === 'home' ? 'default' : 'pointer',
         '& path': {
-          fill: name === 'Home' ? '#c9c7c7' : '#fff'
+          fill: name === 'home' ? '#c9c7c7' : '#fff'
         }
       }),
       inputRoot: {
