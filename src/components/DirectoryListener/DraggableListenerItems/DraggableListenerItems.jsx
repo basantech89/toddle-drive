@@ -49,9 +49,14 @@ const DraggableListenerItems = (props) => {
 
   return (
     <ContextMenuContainer
-      isVisible={props.copiedItem ? props.item.type === 'directory' : true}
+      menuKey={3}
+      setContextMenu={props.setContextMenu}
+      isVisible={
+        props.contextMenu === 3 && props.copiedItem
+          ? props.item.type === 'directory'
+          : true
+      }
       style={{ marginRight: 30 }}
-      key={props.item.id}
       menuItems={
         props.copiedItem
           ? [

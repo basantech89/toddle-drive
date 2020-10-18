@@ -11,6 +11,7 @@ import { ReactComponent as BlankPageIcon } from '../../assets/icons/very-sad.svg
 
 const DirectoryListener = (props) => {
   const classes = useDirectoryListenerStyles()
+  const [contextMenu, setContextMenu] = React.useState(1)
   const { tree, node, content, setContent } = useAppContext()
 
   const [copiedItem, setCopiedItem] = React.useState(null)
@@ -32,6 +33,21 @@ const DirectoryListener = (props) => {
     setCopiedItem(null)
   }
 
+  const contextMenuItems = [
+    {
+      title: `Paste to ${node?.name}`,
+      icon: <MoveToInboxIcon />,
+      onClick: pasteItemToCurrentNode
+    },
+    {
+      title: `Cancel Paste`,
+      icon: <BlockIcon />,
+      onClick: cancelPaste
+    }
+  ]
+
+  console.log(contextMenu)
+
   return (
     <>
       <NewItemModal
@@ -39,7 +55,7 @@ const DirectoryListener = (props) => {
         toggleModalState={toggleNewItemModal}
         handleItemCreate={createItem}
       />
-      <div style={{ display: 'inline-flex' }}>
+      <div style={{ display: 'flex' }}>
         <div
           role='button'
           style={{ marginRight: 30, cursor: 'pointer' }}
@@ -58,6 +74,8 @@ const DirectoryListener = (props) => {
             setCopiedItem={setCopiedItem}
             handleItemDoubleClick={props.handleItemDoubleClick}
             copiedItem={copiedItem}
+            contextMenu={contextMenu}
+            setContextMenu={setContextMenu}
           />
         ) : (
           <div className={classes.blankPage}>
@@ -65,22 +83,20 @@ const DirectoryListener = (props) => {
             <p> use the "Plus" button to create new items </p>
           </div>
         )}
+        <ContextMenuContainer
+          menuKey={1}
+          setContextMenu={setContextMenu}
+          isVisible={!!copiedItem && contextMenu === 1}
+          style={{ flex: 1 }}
+          menuItems={contextMenuItems}
+        />
       </div>
       <ContextMenuContainer
-        isVisible={!!copiedItem}
-        style={{ height: '90%' }}
-        menuItems={[
-          {
-            title: `Paste to ${node?.name}`,
-            icon: <MoveToInboxIcon />,
-            onClick: pasteItemToCurrentNode
-          },
-          {
-            title: `Cancel Paste`,
-            icon: <BlockIcon />,
-            onClick: cancelPaste
-          }
-        ]}
+        menuKey={2}
+        setContextMenu={setContextMenu}
+        isVisible={!!copiedItem && contextMenu === 2}
+        style={{ flex: 1 }}
+        menuItems={contextMenuItems}
       />
     </>
   )

@@ -33,12 +33,14 @@ const ContextMenu = (props) => {
 
     const showMenu = (event) => {
       event.preventDefault()
+      props.setContextMenu(props.menuKey)
       setVisibility(true)
       setX(event.clientX)
       setY(event.clientY)
     }
 
     const closeMenu = () => {
+      props.setContextMenu(null)
       setVisibility(false)
     }
 

@@ -14,10 +14,9 @@ const useHomeStyles = makeStyles(
     },
     directoryListener: {
       padding: 50,
-      flex: 1
-    },
-    rest: {
-      flex: 1
+      flex: 1,
+      display: 'flex',
+      flexDirection: 'column'
     }
   },
   { name: 'Home' }
