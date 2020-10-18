@@ -17,15 +17,14 @@ const AppHeader = (props) => {
   const classes = useAppHeaderStyles({ name: node?.name })
   const rootNode = tree?.getRootNode()
   const breadcrumbClasses = useBreadcrumbStyles()
-  const [searchVal, setSearchVal] = React.useState('')
 
   const resetInputValue = () => {
-    setSearchVal('')
+    props.setSearchVal('')
     setContent(node?.children)
   }
 
   const handleChange = (event) => {
-    setSearchVal(event.target.value)
+    props.setSearchVal(event.target.value)
     setContent(
       node?.children.filter((child) => child.name.includes(event.target.value))
     )
@@ -89,7 +88,7 @@ const AppHeader = (props) => {
           </div>
           <InputBase
             placeholder='Search…'
-            value={searchVal}
+            value={props.searchVal}
             onChange={handleChange}
             onBlur={resetInputValue}
             classes={{

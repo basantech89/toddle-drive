@@ -27,6 +27,7 @@ const Home = () => {
 
   const { setTree, setNode, setContent } = useAppContext()
   const [visitedDirs, setVisitedDirs] = React.useState([])
+  const [searchVal, setSearchVal] = React.useState('')
 
   React.useEffect(() => {
     const currentTree = new Tree()
@@ -72,9 +73,17 @@ const Home = () => {
   return (
     <>
       <div className={classes.root}>
-        <AppHeader visitedDirs={visitedDirs} setVisitedDirs={setVisitedDirs} />
+        <AppHeader
+          visitedDirs={visitedDirs}
+          setVisitedDirs={setVisitedDirs}
+          seachVal={searchVal}
+          setSearchVal={setSearchVal}
+        />
         <div className={classes.directoryListener}>
-          <DirectoryListener handleItemDoubleClick={onItemDoubleClick} />
+          <DirectoryListener
+            handleItemDoubleClick={onItemDoubleClick}
+            searchVal={searchVal}
+          />
         </div>
       </div>
     </>

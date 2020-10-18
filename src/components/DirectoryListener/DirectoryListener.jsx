@@ -78,7 +78,11 @@ const DirectoryListener = (props) => {
         ) : (
           <div className={classes.blankPage}>
             <BlankPageIcon className={classes.icon} />
-            <p> use the "Plus" button to create new items </p>
+            <p>
+              {props.searchVal
+                ? 'No item found'
+                : 'use the "Plus" button to create new items'}
+            </p>
           </div>
         )}
         <ContextMenuContainer
