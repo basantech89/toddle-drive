@@ -80,6 +80,21 @@ Tree.prototype.remove = function (node) {
   }
 }
 
+function getNodeName(copiedNode, toNode) {
+  let newName = copiedNode.name
+  if (copiedNode.parent === toNode) {
+    newName = `${copiedNode.name}-copy`
+  } else {
+    const alreadyExist = toNode.children.some(
+      (child) => child.name === copiedNode.name
+    )
+    if (alreadyExist) {
+      newName = `${copiedNode.name}-copy`
+    }
+  }
+  return newName
+}
+
 Tree.prototype.copy = function (copiedNode, toNode) {
   let queue = [this.root]
   let child
@@ -87,7 +102,7 @@ Tree.prototype.copy = function (copiedNode, toNode) {
     child = queue.shift()
     if (child.id === toNode.id) {
       const pastedNode = new Node({
-        name: copiedNode.name,
+        name: getNodeName(copiedNode, toNode),
         type: copiedNode.type,
         parent: child,
         id: v4()
@@ -125,6 +140,7 @@ Tree.prototype.move = function (fromIdx, toID) {
       toNode = child
       const fromNode = toNode.parent.children.splice(fromIdx, 1)[0]
       fromNode.parent = toNode
+      fromNode.name = getNodeName(fromNode, toNode)
       toNode.children.push(fromNode)
       return toNode.parent.children
     } else {
