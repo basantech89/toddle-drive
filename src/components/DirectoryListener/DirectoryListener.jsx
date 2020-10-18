@@ -85,7 +85,7 @@ const DirectoryListener = (props) => {
             <p>
               {props.searchVal
                 ? 'No item found'
-                : 'use the "Plus" button to create new items'}
+                : 'use the "+" button to create new items'}
             </p>
           </div>
         )}
