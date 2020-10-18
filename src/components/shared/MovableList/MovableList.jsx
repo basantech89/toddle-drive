@@ -38,11 +38,16 @@ const MovableList = (props) => {
       tree.reorder(node.id, reOrderedItems)
       setContent(reOrderedItems)
     } else if (result.combine) {
-      const updatedContent = tree.move(
-        result.source.index,
-        result.combine.draggableId
-      )
-      setContent(updatedContent)
+      const type = node.children.find(
+        (child) => child.id === result.combine.draggableId
+      ).type
+      if (type === 'directory') {
+        const updatedContent = tree.move(
+          result.source.index,
+          result.combine.draggableId
+        )
+        setContent(updatedContent)
+      }
     }
   }
 

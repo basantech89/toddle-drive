@@ -46,8 +46,6 @@ const DirectoryListener = (props) => {
     }
   ]
 
-  console.log(contextMenu)
-
   return (
     <>
       <NewItemModal
