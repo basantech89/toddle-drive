@@ -80,16 +80,16 @@ Tree.prototype.remove = function (node) {
   }
 }
 
-function getNodeName(copiedNode, toNode) {
-  let newName = copiedNode.name
-  if (copiedNode.parent === toNode) {
-    newName = `${copiedNode.name}-copy`
+function getNodeName(fromNode, toNode) {
+  let newName = fromNode.name
+  if (fromNode.parent === toNode) {
+    newName = `${fromNode.name}-copy`
   } else {
     const alreadyExist = toNode.children.some(
-      (child) => child.name === copiedNode.name
+      (child) => child.name === fromNode.name
     )
     if (alreadyExist) {
-      newName = `${copiedNode.name}-copy`
+      newName = `${fromNode.name}-copy`
     }
   }
   return newName

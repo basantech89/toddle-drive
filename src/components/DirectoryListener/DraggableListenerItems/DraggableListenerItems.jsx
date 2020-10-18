@@ -8,10 +8,14 @@ import FileIcon from '../../../assets/icons/file.png'
 import DirectoryIcon from '../../../assets/icons/folder.png'
 import useAppContext from '../../../context/AppContext'
 import { ContextMenuContainer } from '../../shared/ContextMenu'
+import RenameItemModal from '../../RenameItemModal'
 
 const DraggableListenerItems = (props) => {
   const nameRef = React.useRef(null)
   const { tree, node, setContent } = useAppContext()
+
+  const [newItemModal, setNewItemModal] = React.useState(false)
+  const toggleNewItemModal = () => setNewItemModal(!newItemModal)
 
   const getImgIcon = (itemType) => {
     switch (itemType) {
@@ -28,13 +32,13 @@ const DraggableListenerItems = (props) => {
     tree.rename(item, nameRef.current.innerText)
   }
 
+  const renameItem = () => {
+    nameRef.current.focus()
+  }
+
   const removeItem = (item) => () => {
     tree.remove(item)
     setContent([...node.children])
-  }
-
-  const renameItem = () => {
-    nameRef.current.focus()
   }
 
   const copyItem = (item) => () => {
@@ -48,65 +52,73 @@ const DraggableListenerItems = (props) => {
   }
 
   return (
-    <ContextMenuContainer
-      menuKey={3}
-      setContextMenu={props.setContextMenu}
-      isVisible={
-        props.contextMenu === 3 && props.copiedItem
-          ? props.item.type === 'directory'
-          : true
-      }
-      style={{ marginRight: 30 }}
-      menuItems={
-        props.copiedItem
-          ? [
-              {
-                title: `Paste to ${props.item.name}`,
-                icon: <MoveToInboxIcon />,
-                onClick: pasteItemToChildNode(props.item)
-              },
-              {
-                title: `Cancel Paste`,
-                icon: <BlockIcon />,
-                onClick: props.cancelPaste
-              }
-            ]
-          : [
-              {
-                title: 'Rename',
-                icon: <EditIcon />,
-                onClick: renameItem
-              },
-              {
-                title: 'Delete',
-                icon: <DeleteForeverIcon />,
-                onClick: removeItem(props.item)
-              },
-              {
-                title: 'Copy',
-                icon: <FileCopyIcon />,
-                onClick: copyItem(props.item)
-              }
-            ]
-      }
-    >
-      <div onDoubleClick={props.handleItemDoubleClick(props.item)}>
-        <img
-          src={getImgIcon(props.item.type)}
-          alt={props.item.name}
-          width={68}
-          height={80}
-        />
-        <div
-          style={{ textAlign: 'center' }}
-          contentEditable
-          ref={nameRef}
-          onKeyUp={handleNewItemName(props.item)}
-        >
-          {props.item.type ? props.item.name : ''}
+    <>
+      <RenameItemModal
+        item={props.item}
+        modalState={false}
+        toggleModalState={toggleNewItemModal}
+        handleItemCreate={handleNewItemName}
+      />
+      <ContextMenuContainer
+        menuKey={3}
+        setContextMenu={props.setContextMenu}
+        isVisible={
+          props.contextMenu === 3 && props.copiedItem
+            ? props.item.type === 'directory'
+            : true
+        }
+        style={{ marginRight: 30 }}
+        menuItems={
+          props.copiedItem
+            ? [
+                {
+                  title: `Paste to ${props.item.name}`,
+                  icon: <MoveToInboxIcon />,
+                  onClick: pasteItemToChildNode(props.item)
+                },
+                {
+                  title: `Cancel Paste`,
+                  icon: <BlockIcon />,
+                  onClick: props.cancelPaste
+                }
+              ]
+            : [
+                {
+                  title: 'Rename',
+                  icon: <EditIcon />,
+                  onClick: renameItem
+                },
+                {
+                  title: 'Delete',
+                  icon: <DeleteForeverIcon />,
+                  onClick: removeItem(props.item)
+                },
+                {
+                  title: 'Copy',
+                  icon: <FileCopyIcon />,
+                  onClick: copyItem(props.item)
+                }
+              ]
+        }
+      >
+        <div onDoubleClick={props.handleItemDoubleClick(props.item)}>
+          <img
+            src={getImgIcon(props.item.type)}
+            alt={props.item.name}
+            width={68}
+            height={80}
+          />
+          <div
+            style={{ textAlign: 'center' }}
+            contentEditable
+            ref={nameRef}
+            onKeyUp={handleNewItemName(props.item)}
+          >
+            {props.item.type ? props.item.name : ''}
+          </div>
         </div>
-      </div>
-    </ContextMenuContainer>
+      </ContextMenuContainer>
+    </>
   )
 }
 
