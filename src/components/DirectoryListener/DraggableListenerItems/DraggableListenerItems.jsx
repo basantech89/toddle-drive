@@ -99,7 +99,7 @@ const DraggableListenerItems = (props) => {
       >
         <div
           onDoubleClick={props.handleItemDoubleClick(props.item)}
-          style={{ padding: '50px 0 0 0px' }}
+          // style={{ padding: '50px 0 0 0px' }}
         >
           <img
             src={getImgIcon(props.item.type)}

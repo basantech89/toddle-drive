@@ -14,6 +14,7 @@ const useHomeStyles = makeStyles(
       height: '100vh'
     },
     directoryListener: {
+      padding: '50px 0 0 50px',
       flex: 1,
       display: 'flex',
       flexDirection: 'column'

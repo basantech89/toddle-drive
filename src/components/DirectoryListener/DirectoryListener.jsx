@@ -58,8 +58,8 @@ const DirectoryListener = (props) => {
           role='button'
           style={{
             marginRight: 30,
-            cursor: 'pointer',
-            padding: '50px 0 0 50px'
+            cursor: 'pointer'
+            // padding: '50px 0 0 50px'
           }}
           onClick={toggleNewItemModal}
         >
