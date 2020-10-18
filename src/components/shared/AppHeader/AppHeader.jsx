@@ -17,7 +17,6 @@ const AppHeader = (props) => {
   const history = useHistory()
   const { tree, node, setNode, setContent } = useAppContext()
   const classes = useAppHeaderStyles({ name: node?.name })
-  const rootNode = tree?.getRootNode()
   const breadcrumbClasses = useBreadcrumbStyles()
 
   const resetInputValue = () => {
@@ -34,11 +33,13 @@ const AppHeader = (props) => {
 
   const goBack = () => {
     if (node.parent) {
-      setNode(node.parent)
-      setContent(node?.parent?.children)
-      const duplicateDirs = [...props.visitedDirs]
-      duplicateDirs.pop()
-      props.setVisitedDirs(duplicateDirs)
+      let pathNames = window.location.pathname.split('/').slice(1)
+      pathNames.splice(pathNames.length - 1, 1)
+      let pathname = pathNames.join('/')
+      if (!pathname.startsWith('/')) {
+        pathname = `/${pathname}`
+      }
+      history.push(pathname)
     }
   }
 
