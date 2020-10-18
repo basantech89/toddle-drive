@@ -10,6 +10,7 @@ export const useDirectoryListenerStyles = makeStyles(
       flexDirection: 'column',
       alignItems: 'center',
       '& p': {
+        letterSpacing: 0.4,
         paddingTop: 30,
         fontSize: 'large',
         fontWeight: 'bold',

@@ -8,7 +8,10 @@ export const useAppHeaderStyles = makeStyles(
         justifyContent: 'space-between'
       },
       title: {
+        letterSpacing: 0.7,
         flexGrow: 1,
+        fontWeight: '600',
+        fontFamily: 'Poppins',
         // display: 'none',
         color: '#fff',
         textDecoration: 'none',
