@@ -8,7 +8,7 @@ import ListItemText from '@material-ui/core/ListItemText'
 const useListStyles = makeStyles(
   {
     root: {
-      padding: '20px 0',
+      padding: '10px 0',
       position: 'absolute',
       backgroundColor: 'white',
       border: '1px solid',
@@ -60,6 +60,7 @@ const ContextMenu = (props) => {
     <List
       classes={listClasses}
       style={style}
+      dense
       component='nav'
       aria-labelledby='Context Menu'
     >

@@ -14,6 +14,7 @@ const reorder = (list, startIndex, endIndex) => {
 const getItemStyle = (isDragging, draggableStyle) => ({
   userSelect: 'none',
   background: isDragging ? '#72a2c0' : 'transparent',
+  outline: 'none',
   ...draggableStyle
 })
 
