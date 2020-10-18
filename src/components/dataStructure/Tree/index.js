@@ -49,13 +49,6 @@ Tree.prototype.rename = function (node, newName) {
   while (queue.length > 0) {
     child = queue.shift()
     if (child.id === node.id) {
-      const alreadyExists = child.parent.children.some(
-        (currentNode) =>
-          currentNode.id !== node.id && currentNode.name === newName
-      )
-      if (alreadyExists) {
-        return 'File / Folder with this name already Exists!'
-      }
       child.name = newName
       return ''
     } else {

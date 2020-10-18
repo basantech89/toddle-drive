@@ -27,7 +27,6 @@ const RenameItemModal = (props) => {
     } else if (checkAlreadyExist(node, itemName)) {
       setItemNameError('File / Folder name already exist')
     } else {
-      console.log('here', itemName)
       props.onItemRename(itemName)
       props.toggleModalState()
       setItemNameError('')
