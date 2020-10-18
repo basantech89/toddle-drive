@@ -1,7 +1,6 @@
 import * as React from 'react'
 import { DialogContent, TextField } from '@material-ui/core'
 import { ToggleButton, ToggleButtonGroup } from '@material-ui/lab'
-import { v4 } from 'uuid'
 import { useNewItemModalStyles, useToggleButtonGroupStyles } from './style'
 import useAppContext from '../../context/AppContext'
 import ItemDialog from '../shared/ItemDialog'
@@ -9,21 +8,15 @@ import ItemDialog from '../shared/ItemDialog'
 const RenameItemModal = (props) => {
   const classes = useNewItemModalStyles()
   const toggleButtonGroupClasses = useToggleButtonGroupStyles()
-
   const { node } = useAppContext()
-  const itemNameRef = React.useRef('')
+  const itemNameRef = React.useRef(props.item.name)
   const [itemNameError, setItemNameError] = React.useState('')
   const resetItemError = () => setItemNameError('')
 
-  const [itemType, setItemType] = React.useState('file')
-  const handleItemType = (event, newAlignment) => {
-    if (newAlignment !== null) {
-      setItemType(newAlignment)
-    }
-  }
-
   const checkAlreadyExist = (node, name) => {
-    const isMatched = node.children.some((child) => child.name === name)
+    const isMatched = node.children.some(
+      (child) => child.id !== props.item.id && child.name === name
+    )
     return isMatched
   }
 
@@ -34,12 +27,8 @@ const RenameItemModal = (props) => {
     } else if (checkAlreadyExist(node, itemName)) {
       setItemNameError('File / Folder name already exist')
     } else {
-      props.handleItemCreate({
-        name: itemName,
-        type: itemType,
-        active: false,
-        id: v4()
-      })
+      console.log('here', itemName)
+      props.onItemRename(itemName)
       props.toggleModalState()
       setItemNameError('')
     }
@@ -60,10 +49,9 @@ const RenameItemModal = (props) => {
       dialogContent={
         <DialogContent className={classes.contentRoot}>
           <ToggleButtonGroup
-            value={itemType}
+            value={props.item.type}
             exclusive
-            onChange={handleItemType}
-            aria-label='item type toggle buttons'
+            aria-label='item rename toggle buttons'
             classes={toggleButtonGroupClasses}
           >
             <ToggleButton value='file' aria-label='file toggle button'>
@@ -74,6 +62,7 @@ const RenameItemModal = (props) => {
             </ToggleButton>
           </ToggleButtonGroup>
           <TextField
+            defaultValue={props.item.name}
             className={classes.inputRoot}
             onFocus={resetItemError}
             error={!!itemNameError}

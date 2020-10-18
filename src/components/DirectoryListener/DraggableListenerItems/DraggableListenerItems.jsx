@@ -11,11 +11,10 @@ import { ContextMenuContainer } from '../../shared/ContextMenu'
 import RenameItemModal from '../../RenameItemModal'
 
 const DraggableListenerItems = (props) => {
-  const nameRef = React.useRef(null)
   const { tree, node, setContent } = useAppContext()
 
-  const [newItemModal, setNewItemModal] = React.useState(false)
-  const toggleNewItemModal = () => setNewItemModal(!newItemModal)
+  const [renameDialogState, setRenameDialogState] = React.useState(false)
+  const toggleRenameDialogState = () => setRenameDialogState(!renameDialogState)
 
   const getImgIcon = (itemType) => {
     switch (itemType) {
@@ -28,12 +27,8 @@ const DraggableListenerItems = (props) => {
     }
   }
 
-  const handleNewItemName = (item) => () => {
-    tree.rename(item, nameRef.current.innerText)
-  }
-
-  const renameItem = () => {
-    nameRef.current.focus()
+  const handleItemRename = (newName) => {
+    tree.rename(props.item, newName)
   }
 
   const removeItem = (item) => () => {
@@ -43,6 +38,7 @@ const DraggableListenerItems = (props) => {
 
   const copyItem = (item) => () => {
     props.setCopiedItem(item)
+    props.setContextMenu(null)
   }
 
   const pasteItemToChildNode = (child) => () => {
@@ -55,10 +51,11 @@ const DraggableListenerItems = (props) => {
     <>
       <RenameItemModal
         item={props.item}
-        modalState={false}
-        toggleModalState={toggleNewItemModal}
-        handleItemCreate={handleNewItemName}
+        modalState={renameDialogState}
+        toggleModalState={toggleRenameDialogState}
+        onItemRename={handleItemRename}
       />
+
       <ContextMenuContainer
         menuKey={3}
         setContextMenu={props.setContextMenu}
@@ -86,7 +83,7 @@ const DraggableListenerItems = (props) => {
                 {
                   title: 'Rename',
                   icon: <EditIcon />,
-                  onClick: renameItem
+                  onClick: toggleRenameDialogState
                 },
                 {
                   title: 'Delete',
@@ -108,12 +105,7 @@ const DraggableListenerItems = (props) => {
             width={68}
             height={80}
           />
-          <div
-            style={{ textAlign: 'center' }}
-            contentEditable
-            ref={nameRef}
-            onKeyUp={handleNewItemName(props.item)}
-          >
+          <div style={{ textAlign: 'center' }}>
             {props.item.type ? props.item.name : ''}
           </div>
         </div>
