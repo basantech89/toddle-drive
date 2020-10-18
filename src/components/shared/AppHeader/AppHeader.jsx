@@ -52,7 +52,7 @@ const AppHeader = (props) => {
   }
 
   return (
-    <AppBar position={'static'}>
+    <AppBar position={'static'} elevation={0}>
       <Toolbar className={classes.toolbar}>
         <div style={{ display: 'flex', alignItems: 'center' }}>
           <NavLink to='/' variant='h6' className={classes.title} noWrap>
@@ -64,7 +64,11 @@ const AppHeader = (props) => {
             className={classes.backButton}
             onClick={goBack}
           />
-          <Breadcrumbs aria-label='breadcrumb' classes={breadcrumbClasses}>
+          <Breadcrumbs
+            aria-label='breadcrumb'
+            classes={breadcrumbClasses}
+            maxItems={5}
+          >
             <StyledBreadcrumb
               component='a'
               label='Home'

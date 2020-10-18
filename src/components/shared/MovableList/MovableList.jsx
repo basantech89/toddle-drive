@@ -22,7 +22,8 @@ const getListStyle = (isDraggingOver) => ({
   background: isDraggingOver ? '#a0bacb' : null,
   display: 'flex',
   padding: '0 20px',
-  borderRadius: 10
+  borderRadius: 10,
+  flexWrap: 'wrap'
 })
 
 const MovableList = (props) => {

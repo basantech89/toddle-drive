@@ -47,14 +47,6 @@ const DraggableListenerItems = (props) => {
     setContent([...node.children])
   }
 
-  console.log(
-    'listener',
-    props.contextMenu,
-    props.item.id,
-    props.contextMenu === props.item.id &&
-      (props.copiedItem ? props.item.type === 'directory' : true)
-  )
-
   return (
     <>
       <RenameItemModal
@@ -105,7 +97,10 @@ const DraggableListenerItems = (props) => {
               ]
         }
       >
-        <div onDoubleClick={props.handleItemDoubleClick(props.item)}>
+        <div
+          onDoubleClick={props.handleItemDoubleClick(props.item)}
+          style={{ padding: '50px 0 0 0px' }}
+        >
           <img
             src={getImgIcon(props.item.type)}
             alt={props.item.name}

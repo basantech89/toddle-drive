@@ -44,7 +44,6 @@ const ContextMenu = (props) => {
 
     const showMenu = (event) => {
       event.preventDefault()
-      closeMenu()
       props.setContextMenu(props.menuKey)
       setVisibility(true)
       setX(event.clientX)
@@ -64,8 +63,6 @@ const ContextMenu = (props) => {
     top: y,
     left: x
   }
-
-  console.log('menu', props.isVisible)
 
   return isVisible && props.isVisible ? (
     <List

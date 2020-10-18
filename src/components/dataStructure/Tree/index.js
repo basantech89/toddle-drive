@@ -8,17 +8,15 @@ export const Node = function (node) {
   this.children = []
 }
 
-function getNodeName(fromNode, toNode) {
+const alreadyExist = (fromNode, toNode) =>
+  toNode.children.some((child) => child.name === fromNode.name)
+
+const getNodeName = (fromNode, toNode) => {
   let newName = fromNode.name
-  if (fromNode.parent === toNode) {
+  if (alreadyExist(fromNode, toNode)) {
     newName = `${fromNode.name}-copy`
-  } else {
-    const alreadyExist = toNode.children.some(
-      (child) => child.name === fromNode.name
-    )
-    if (alreadyExist) {
-      newName = `${fromNode.name}-copy`
-    }
+    fromNode.name = newName
+    return getNodeName(fromNode, toNode)
   }
   return newName
 }
@@ -98,11 +96,12 @@ export class Tree {
       child = queue.shift()
       if (child.id === toNode.id) {
         const pastedNode = new Node({
-          name: getNodeName(copiedNode, toNode),
+          name: copiedNode.name,
           type: copiedNode.type,
           parent: child,
           id: v4()
         })
+        pastedNode.name = getNodeName(pastedNode, toNode)
         pastedNode.children = [...copiedNode.children]
         child.children.push(pastedNode)
         return

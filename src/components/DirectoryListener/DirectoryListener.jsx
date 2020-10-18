@@ -56,7 +56,11 @@ const DirectoryListener = (props) => {
       <div style={{ display: 'flex' }}>
         <div
           role='button'
-          style={{ marginRight: 30, cursor: 'pointer' }}
+          style={{
+            marginRight: 30,
+            cursor: 'pointer',
+            padding: '50px 0 0 50px'
+          }}
           onClick={toggleNewItemModal}
         >
           <img
