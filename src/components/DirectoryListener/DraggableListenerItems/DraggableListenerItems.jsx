@@ -47,6 +47,14 @@ const DraggableListenerItems = (props) => {
     setContent([...node.children])
   }
 
+  console.log(
+    'listener',
+    props.contextMenu,
+    props.item.id,
+    props.contextMenu === props.item.id &&
+      (props.copiedItem ? props.item.type === 'directory' : true)
+  )
+
   return (
     <>
       <RenameItemModal
@@ -57,12 +65,11 @@ const DraggableListenerItems = (props) => {
       />
 
       <ContextMenuContainer
-        menuKey={3}
+        menuKey={props.item.id}
         setContextMenu={props.setContextMenu}
         isVisible={
-          props.contextMenu === 3 && props.copiedItem
-            ? props.item.type === 'directory'
-            : true
+          props.contextMenu === props.item.id &&
+          (props.copiedItem ? props.item.type === 'directory' : true)
         }
         style={{ marginRight: 30 }}
         menuItems={
