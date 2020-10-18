@@ -13,7 +13,13 @@ const useListStyles = makeStyles(
       backgroundColor: 'white',
       border: '1px solid',
       borderColor: '#eceaea',
-      borderRadius: 5
+      borderRadius: 5,
+      '& .MuiListItemIcon-root': {
+        minWidth: 35,
+        '& svg': {
+          height: 20
+        }
+      }
     }
   },
   { name: 'ContextMenu-List' }
@@ -31,17 +37,17 @@ const ContextMenu = (props) => {
       return
     }
 
+    const closeMenu = () => {
+      props.setContextMenu(null)
+      setVisibility(false)
+    }
+
     const showMenu = (event) => {
       event.preventDefault()
       props.setContextMenu(props.menuKey)
       setVisibility(true)
       setX(event.clientX)
       setY(event.clientY)
-    }
-
-    const closeMenu = () => {
-      props.setContextMenu(null)
-      setVisibility(false)
     }
 
     parent.addEventListener('contextmenu', showMenu)
