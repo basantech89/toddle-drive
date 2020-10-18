@@ -139,8 +139,8 @@ Tree.prototype.move = function (fromIdx, toID) {
     if (child.id === toID) {
       toNode = child
       const fromNode = toNode.parent.children.splice(fromIdx, 1)[0]
-      fromNode.parent = toNode
       fromNode.name = getNodeName(fromNode, toNode)
+      fromNode.parent = toNode
       toNode.children.push(fromNode)
       return toNode.parent.children
     } else {
